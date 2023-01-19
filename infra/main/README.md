@@ -13,6 +13,7 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.35.0 |
+| <a name="provider_template"></a> [template](#provider\_template) | 2.2.0 |
 
 ## Modules
 
@@ -22,18 +23,19 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azurerm_bastion_host.bastion](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/bastion_host) | resource |
 | [azurerm_container_registry.cr](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/container_registry) | resource |
 | [azurerm_linux_virtual_machine.vm](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/linux_virtual_machine) | resource |
 | [azurerm_network_interface.vm_nic](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_interface) | resource |
+| [azurerm_network_security_group.sg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/network_security_group) | resource |
 | [azurerm_private_dns_zone.pdz](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone) | resource |
 | [azurerm_private_dns_zone_virtual_network_link.dnszonelink](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/private_dns_zone_virtual_network_link) | resource |
-| [azurerm_public_ip.bastion_pip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
+| [azurerm_public_ip.pip](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/public_ip) | resource |
 | [azurerm_resource_group.rg](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/resource_group) | resource |
 | [azurerm_subnet.aci_sub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
-| [azurerm_subnet.bastion_sub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
 | [azurerm_subnet.vm_sub](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet) | resource |
+| [azurerm_subnet_network_security_group_association.nsga](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/subnet_network_security_group_association) | resource |
 | [azurerm_virtual_network.vnet](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/virtual_network) | resource |
+| [template_file.init](https://registry.terraform.io/providers/hashicorp/template/latest/docs/data-sources/file) | data source |
 
 ## Inputs
 
@@ -41,7 +43,6 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_aci_sub_address_prefixes"></a> [aci\_sub\_address\_prefixes](#input\_aci\_sub\_address\_prefixes) | The address prefixes of the aci subnet. | `list(string)` | <pre>[<br>  "10.0.1.0/24"<br>]</pre> | no |
 | <a name="input_address_space"></a> [address\_space](#input\_address\_space) | The address space of the virtual network. | `list(string)` | <pre>[<br>  "10.0.0.0/16"<br>]</pre> | no |
-| <a name="input_bastion_sub_address_prefixes"></a> [bastion\_sub\_address\_prefixes](#input\_bastion\_sub\_address\_prefixes) | The address prefixes of the Bastion subnet. | `list(string)` | <pre>[<br>  "10.0.100.0/24"<br>]</pre> | no |
 | <a name="input_client_id"></a> [client\_id](#input\_client\_id) | The Azure Service Principal client id. | `string` | n/a | yes |
 | <a name="input_client_secret"></a> [client\_secret](#input\_client\_secret) | The Azure Service Principal client secret. | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | The environment name. | `string` | n/a | yes |
@@ -50,7 +51,6 @@ No modules.
 | <a name="input_subscription_id"></a> [subscription\_id](#input\_subscription\_id) | The Azure account subscription id. | `string` | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | A map of tags to associate with your resources. | `map(string)` | <pre>{<br>  "created_by": "terraform",<br>  "environment": "dev"<br>}</pre> | no |
 | <a name="input_tenant_id"></a> [tenant\_id](#input\_tenant\_id) | The Azure Service Principal tenant id. | `string` | n/a | yes |
-| <a name="input_vm_admin_password"></a> [vm\_admin\_password](#input\_vm\_admin\_password) | The password of the local administrator used for the Virtual Machine. Changing this forces a new resource to be created. | `string` | n/a | yes |
 | <a name="input_vm_admin_username"></a> [vm\_admin\_username](#input\_vm\_admin\_username) | The username of the local administrator used for the Virtual Machine. Changing this forces a new resource to be created. | `string` | `"adminuser"` | no |
 | <a name="input_vm_disk_caching"></a> [vm\_disk\_caching](#input\_vm\_disk\_caching) | The Type of Caching which should be used for the Internal OS Disk. Possible values are None, ReadOnly and ReadWrite. | `string` | `"ReadWrite"` | no |
 | <a name="input_vm_disk_storage_type"></a> [vm\_disk\_storage\_type](#input\_vm\_disk\_storage\_type) | The Storage Account Type of the Internal OS Disk. Possible values are Standard\_LRS, StandardSSD\_LRS, Premium\_LRS, StandardSSD\_ZRS and Premium\_ZRS. Changing this forces a new resource to be created. | `string` | `"Standard_LRS"` | no |
@@ -58,7 +58,7 @@ No modules.
 | <a name="input_vm_publisher"></a> [vm\_publisher](#input\_vm\_publisher) | Specifies the publisher of the image used to create the virtual machine. | `string` | `"canonical"` | no |
 | <a name="input_vm_size"></a> [vm\_size](#input\_vm\_size) | The SKU which should be used for the Virtual Machine, such as Standard\_F2. | `string` | `"Standard_D2s_v3"` | no |
 | <a name="input_vm_sku"></a> [vm\_sku](#input\_vm\_sku) | Specifies the SKU of the image used to create the virtual machine. | `string` | `"22_04-lts-gen2"` | no |
-| <a name="input_vm_sub_address_prefixes"></a> [vm\_sub\_address\_prefixes](#input\_vm\_sub\_address\_prefixes) | The address prefixes of the VM subnet. | `list(string)` | <pre>[<br>  "10.0.150.0/24"<br>]</pre> | no |
+| <a name="input_vm_sub_address_prefixes"></a> [vm\_sub\_address\_prefixes](#input\_vm\_sub\_address\_prefixes) | The address prefixes of the VM subnet. | `list(string)` | <pre>[<br>  "10.0.100.0/24"<br>]</pre> | no |
 | <a name="input_vm_version"></a> [vm\_version](#input\_vm\_version) | Specifies the version of the image used to create the virtual machine. | `string` | `"latest"` | no |
 
 ## Outputs
@@ -72,6 +72,7 @@ No modules.
 | <a name="output_dns_zone_name"></a> [dns\_zone\_name](#output\_dns\_zone\_name) | DNS zone name to use. |
 | <a name="output_resource_group_location"></a> [resource\_group\_location](#output\_resource\_group\_location) | The Resource Group location. |
 | <a name="output_resource_group_name"></a> [resource\_group\_name](#output\_resource\_group\_name) | The Resource Group name. |
+| <a name="output_vm_public_ip"></a> [vm\_public\_ip](#output\_vm\_public\_ip) | The public IP of the VM. |
 <!-- END_TF_DOCS -->
 
 # Helper Commands
@@ -82,4 +83,46 @@ Use the [terraform-docs](https://terraform-docs.io/how-to/insert-output-to-file/
 
 ```bash
 terraform-docs markdown table --output-file README.md .
+```
+
+## List Available Ubuntu Images
+
+If you decide to change the VM Ubuntu distribution, you can use the following command to find available images:
+
+```bash
+az vm image list --all --publisher Canonical
+```
+
+## Generate New SSH Key
+
+If you would like to create a new SSH key, run the following commands:
+
+```bash
+ssh-keygen -t rsa -b 4096 -f ssh-key/key -N '' -C 'key'
+
+chmod 400 ssh-key/key*
+```
+
+## SSH into the VM
+
+```bash
+ssh -i ssh-key/key adminuser@<VM_PUBLIC_IP>
+```
+
+## Check Progress of VM Template Script
+
+```bash
+tail -f /var/log/cloud-init-output.log
+```
+
+The script has completed running when a message similar to this one appears:
+
+```bash
+Cloud-init v. 22.4.2-0ubuntu0~22.04.1 finished at <TIMESTAMP>. Datasource DataSourceAzure [seed=/dev/sr0].  Up 277.02 seconds
+```
+
+## Get the Jenkins Admin User Password
+
+```bash
+sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```

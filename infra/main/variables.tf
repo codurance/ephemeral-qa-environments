@@ -46,16 +46,10 @@ variable "aci_sub_address_prefixes" {
   default     = ["10.0.1.0/24"]
 }
 
-variable "bastion_sub_address_prefixes" {
-  type        = list(string)
-  description = "The address prefixes of the Bastion subnet."
-  default     = ["10.0.100.0/24"]
-}
-
 variable "vm_sub_address_prefixes" {
   type        = list(string)
   description = "The address prefixes of the VM subnet."
-  default     = ["10.0.150.0/24"]
+  default     = ["10.0.100.0/24"]
 }
 
 variable "vm_size" {
@@ -68,11 +62,6 @@ variable "vm_admin_username" {
   type        = string
   description = "The username of the local administrator used for the Virtual Machine. Changing this forces a new resource to be created."
   default     = "adminuser"
-}
-
-variable "vm_admin_password" {
-  type        = string
-  description = "The password of the local administrator used for the Virtual Machine. Changing this forces a new resource to be created."
 }
 
 variable "vm_publisher" {
