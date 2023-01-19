@@ -2,32 +2,32 @@
 
 set -e -o pipefail
 
-readonly SCRIPT_DIR="$(dirname "$0")"
-
 print_help() {
   echo "Script usage: $(basename "$0") [-r] <acr_registry_name|acr_registry_login_server>" >&2
 }
 
-if [ $# = 0 ]; then
-  print_help
-  exit 1
-fi
-
-while getopts 'r:' OPTION; do
-  case "$OPTION" in
-  r)
-    REGISTRY="${OPTARG%'.azurecr.io'}"
-    if [ -z "$REGISTRY" ]; then
-      print_help
-      exit 1
-    fi
-    ;;
-  *)
+handle_input() {
+  if [ $# = 0 ]; then
     print_help
     exit 1
-    ;;
-  esac
-done
+  fi
+
+  while getopts 'r:' OPTION; do
+    case "$OPTION" in
+    r)
+      REGISTRY="${OPTARG%'.azurecr.io'}"
+      if [ -z "$REGISTRY" ]; then
+        print_help
+        exit 1
+      fi
+      ;;
+    *)
+      print_help
+      exit 1
+      ;;
+    esac
+  done
+}
 
 acr_login() {
   registry="$1"
@@ -40,15 +40,25 @@ build_image() {
   path="$2"
 
   docker build -t "$tag" "$path"
-  docker push "$tag"
-  docker rmi "$tag"
 }
+
+push_image() {
+  tag="$1"
+
+  docker push "$tag"
+}
+
+build_images() {
+  find . -mindepth 1 -maxdepth 1 -type d -printf "%f\n" | while read -r service; do
+    build_image "$REGISTRY.azurecr.io/$service" "$service"
+    push_image "$REGISTRY.azurecr.io/$service"
+  done
+}
+
+handle_input "$@"
 
 echo "Authetication with azure container registry '$REGISTRY' ..."
 acr_login "$REGISTRY"
 
 echo "Building images..."
-for image in $(find . -mindepth 1 -maxdepth 1 -type d | grep -v jenkins | sed 's/\.\///'); do
-  echo "$image"
-  build_image "$REGISTRY.azurecr.io/$image" "$(dirname "$0")/$image"
-done
+build_images
