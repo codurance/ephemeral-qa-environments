@@ -50,7 +50,8 @@ resource "azurerm_container_group" "acg" {
 
     /*
         Note: Ideally a managed identity would be used here, but since managed identities are not supported in a
-        container group deployed to a virtual network, this module relies on service principal credentials.
+        container group deployed to a virtual network (as of azurerm version 3.39.1), this module relies on service
+        principal credentials.
     */
     secure_environment_variables = {
       "APP_ID" : var.dns_service_principal.client_id
