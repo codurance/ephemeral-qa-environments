@@ -21,14 +21,16 @@ if ! az network private-dns record-set a show \
         --record-set-name "$A_RECORD_NAME" \
         --resource-group "$RESOURCE_GROUP" \
         --zone-name "$DNS_ZONE_NAME" \
-        --ipv4-address "$ACI_IP"
+        --ipv4-address "$ACI_IP" \
+        --ttl "$TTL"
 else
 
     az network private-dns record-set a update \
         --name "$A_RECORD_NAME" \
         --resource-group "$RESOURCE_GROUP" \
         --zone-name "$DNS_ZONE_NAME" \
-        --set "aRecords[0].ipv4Address=$ACI_IP"
+        --set "aRecords[0].ipv4Address=$ACI_IP" \
+        --ttl "$TTL"
 fi
 
 echo "Successfully updated DNS A record: '$A_RECORD_NAME' as '$ACI_IP'"

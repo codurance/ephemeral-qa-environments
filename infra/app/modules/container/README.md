@@ -28,7 +28,8 @@ No modules.
 | <a name="input_container_registry"></a> [container\_registry](#input\_container\_registry) | Container registry information. | <pre>object({<br>    server   = string<br>    username = string<br>    password = string<br>  })</pre> | n/a | yes |
 | <a name="input_cpu"></a> [cpu](#input\_cpu) | The number of CPU cores of the container. | `string` | `"0.5"` | no |
 | <a name="input_dns_record_name"></a> [dns\_record\_name](#input\_dns\_record\_name) | DNS record name. | `string` | n/a | yes |
-| <a name="input_dns_service_principal"></a> [dns\_service\_principal](#input\_dns\_service\_principal) | Service Principal Credentials for the DNS sidecar | <pre>object({<br>    client_id   = string<br>    client_secret = string<br>    tenant_id = string<br>  })</pre> | n/a | yes |
+| <a name="input_dns_record_ttl"></a> [dns\_record\_ttl](#input\_dns\_record\_ttl) | DNS record TTL value in seconds. | `number` | `120` | no |
+| <a name="input_dns_service_principal"></a> [dns\_service\_principal](#input\_dns\_service\_principal) | Service Principal Credentials for the DNS sidecar | <pre>object({<br>    client_id     = string<br>    client_secret = string<br>    tenant_id     = string<br>  })</pre> | n/a | yes |
 | <a name="input_dns_sidecar_cpu"></a> [dns\_sidecar\_cpu](#input\_dns\_sidecar\_cpu) | The number of CPU cores of the dns sidecar container. | `string` | `"0.5"` | no |
 | <a name="input_dns_sidecar_docker_image_name"></a> [dns\_sidecar\_docker\_image\_name](#input\_dns\_sidecar\_docker\_image\_name) | The service container docker image name (without the container registry name). | `string` | `"dns_sidecar"` | no |
 | <a name="input_dns_sidecar_docker_image_tag"></a> [dns\_sidecar\_docker\_image\_tag](#input\_dns\_sidecar\_docker\_image\_tag) | The service container docker image tag. | `string` | `"latest"` | no |

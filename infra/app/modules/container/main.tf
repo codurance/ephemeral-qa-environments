@@ -46,6 +46,7 @@ resource "azurerm_container_group" "acg" {
       "RESOURCE_GROUP" : var.resource_group.name
       "A_RECORD_NAME" : var.dns_record_name
       "DNS_ZONE_NAME" : var.dns_zone_name
+      "TTL" : var.dns_record_ttl
     }
 
     /*

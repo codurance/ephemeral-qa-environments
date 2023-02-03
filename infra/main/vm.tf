@@ -23,7 +23,7 @@ resource "azurerm_network_security_group" "sg" {
   }
 
   security_rule {
-    name                       = "Jenkins HTTP"
+    name                       = "Jenkins-HTTP"
     priority                   = 200
     direction                  = "Inbound"
     access                     = "Allow"

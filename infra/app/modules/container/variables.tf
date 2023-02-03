@@ -102,11 +102,17 @@ variable "dns_record_name" {
   description = "DNS record name."
 }
 
+variable "dns_record_ttl" {
+  type        = number
+  description = "DNS record TTL value in seconds."
+  default     = 120
+}
+
 variable "dns_service_principal" {
   type = object({
-    client_id   = string
+    client_id     = string
     client_secret = string
-    tenant_id = string
+    tenant_id     = string
   })
   description = "Service Principal Credentials for the DNS sidecar"
 }
