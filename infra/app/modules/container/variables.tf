@@ -102,12 +102,6 @@ variable "dns_record_name" {
   description = "DNS record name."
 }
 
-variable "dns_record_ttl" {
-  type        = number
-  description = "DNS record TTL value in seconds."
-  default     = 60
-}
-
 variable "dns_service_principal" {
   type = object({
     client_id     = string
