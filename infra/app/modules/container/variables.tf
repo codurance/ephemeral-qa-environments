@@ -105,7 +105,7 @@ variable "dns_record_name" {
 variable "dns_record_ttl" {
   type        = number
   description = "DNS record TTL value in seconds."
-  default     = 120
+  default     = 60
 }
 
 variable "dns_service_principal" {
